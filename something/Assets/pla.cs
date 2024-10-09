@@ -1,36 +1,62 @@
 /* 
  * author : jiankaiwang
- * description : The script provides you with basic operations of first personal control.
+ * description : The script provides you with basic operations of first personal control with gravity using CharacterController.
  * platform : Unity
- * date : 2017/12
+ * date : 2024/10
  */
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour {
+[RequireComponent(typeof(CharacterController))]
+public class CharacterControllerScript : MonoBehaviour {
 
     public float speed = 10.0f;
+    public float gravity = 9.81f;
+    public float jumpHeight = 2.0f;
     private float translation;
     private float straffe;
+    private Vector3 movementDirection = Vector3.zero;
+    private CharacterController controller;
+    private bool isGrounded;
 
-    // Use this for initialization
+    // Start is called before the first frame update
     void Start () {
-        // turn off the cursor
-        Cursor.lockState = CursorLockMode.Locked;		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        // Input.GetAxis() is used to get the user's input
-        // You can furthor set it on Unity. (Edit, Project Settings, Input)
-        translation = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-        straffe = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        transform.Translate(straffe, 0, translation);
+        // Get the CharacterController component
+        controller = GetComponent<CharacterController>();
 
+        // Turn off the cursor
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+    
+    void Update () {
+        // Check if the character is grounded
+        isGrounded = controller.isGrounded;
+
+        if (isGrounded) {
+            // Get input for movement
+            translation = Input.GetAxis("Vertical") * speed;
+            straffe = Input.GetAxis("Horizontal") * speed;
+
+            // Set movement direction based on input
+            movementDirection = new Vector3(straffe, 0, translation);
+            movementDirection = transform.TransformDirection(movementDirection);
+
+            // Jumping
+            if (Input.GetButtonDown("Jump")) {
+                movementDirection.y = Mathf.Sqrt(jumpHeight * 2.0f * gravity);
+            }
+        }
+
+        // Apply gravity
+        movementDirection.y -= gravity * Time.deltaTime;
+
+        // Move the player
+        controller.Move(movementDirection * Time.deltaTime);
+
+        // Unlock the cursor on escape
         if (Input.GetKeyDown("escape")) {
-            // turn on the cursor
             Cursor.lockState = CursorLockMode.None;
         }
     }

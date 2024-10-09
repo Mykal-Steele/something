@@ -15,6 +15,7 @@ public class CharacterControllerScript : MonoBehaviour {
     public float speed = 10.0f;
     public float gravity = 9.81f;
     public float jumpHeight = 2.0f;
+    public float sensitivity = 1.0f;
     private float translation;
     private float straffe;
     private Vector3 movementDirection = Vector3.zero;
@@ -36,8 +37,8 @@ public class CharacterControllerScript : MonoBehaviour {
 
         if (isGrounded) {
             // Get input for movement
-            translation = Input.GetAxis("Vertical") * speed;
-            straffe = Input.GetAxis("Horizontal") * speed;
+            translation = Input.GetAxisRaw("Vertical") * speed;
+            straffe = Input.GetAxisRaw("Horizontal") * speed;
 
             // Set movement direction based on input
             movementDirection = new Vector3(straffe, 0, translation);

@@ -1,10 +1,3 @@
-/* 
- * author : jiankaiwang
- * description : The script provides you with basic operations of first personal control with gravity using CharacterController.
- * platform : Unity
- * date : 2024/10
- */
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

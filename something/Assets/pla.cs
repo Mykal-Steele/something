@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class CharacterControllerScript : MonoBehaviour {
 
-    public float speed = 10.0f;
-    public float gravity = 9.81f;
+    public float speed = 9.8f;
+    public float gravity = 15f;
     public float jumpHeight = 2.0f;
     public float sensitivity = 1.0f;
     private float translation;
